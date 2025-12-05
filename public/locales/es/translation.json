@@ -39,5 +39,13 @@
     "magnolia": "Incluso los Pokémon más poderosos fueron una vez pequeños y débiles.",
     "laventon": "Cuanto más aprendemos sobre los Pokémon, más maravillosos se vuelven.",
     "nemona": "Cada Pokémon tiene su propio encanto y personalidad únicos."
+  },
+  "404": {
+    "title": "Página No Encontrada",
+    "description": "La página que buscas no existe.",
+    "message": "¡El Pokémon que buscas parece haberse perdido en la hierba alta!",
+    "help": "Vamos a ponerte de vuelta en el camino correcto.",
+    "goBack": "Volver",
+    "home": "Inicio"
   }
 }

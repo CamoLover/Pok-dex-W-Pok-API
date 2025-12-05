@@ -39,5 +39,13 @@
     "magnolia": "Même les Pokémon les plus puissants étaient autrefois petits et faibles.",
     "laventon": "Plus nous en apprenons sur les Pokémon, plus ils deviennent merveilleux.",
     "nemona": "Chaque Pokémon a son propre charme et sa personnalité uniques."
+  },
+  "404": {
+    "title": "Page Introuvable",
+    "description": "La page que vous cherchez n'existe pas.",
+    "message": "Le Pokémon que vous cherchez semble s'être égaré dans les hautes herbes !",
+    "help": "Remettons-vous sur la bonne voie.",
+    "goBack": "Retour",
+    "home": "Accueil"
   }
 }

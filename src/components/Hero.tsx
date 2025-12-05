@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Box, Container, Typography, Button } from '@mui/material';
 
 interface HeroProps {
@@ -8,10 +9,17 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ ready, t }) => {
   const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const handleRandomPokemon = () => {
+    // Generate random Pokemon ID between 1 and 1302 (all available Pokemon)
+    const randomId = Math.floor(Math.random() * 1302) + 1;
+    router.push(`/pokemon/${randomId}`);
+  };
   return (
     <Box
       sx={{
@@ -70,6 +78,7 @@ const Hero: React.FC<HeroProps> = ({ ready, t }) => {
         <Button
           variant="contained"
           size="large"
+          onClick={handleRandomPokemon}
           sx={{
             bgcolor: 'secondary.main',
             color: 'white',

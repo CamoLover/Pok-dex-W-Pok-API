@@ -31,6 +31,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import PokemonImage from '../../components/PokemonImage';
+import TypeChip from '../../components/TypeChip';
 import {
   fetchPokemon,
   fetchPokemonSpecies,
@@ -239,7 +240,7 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
                     color="warning"
                   />
                 }
-                label="✨ Shiny"
+                label="Shiny"
                 sx={{ fontSize: '1.1rem', fontWeight: 500 }}
               />
             </Box>
@@ -298,15 +299,9 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
                     {/* Types */}
                     <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
                       {pokemon.types.map((type) => (
-                        <Chip
+                        <TypeChip
                           key={type.type.name}
-                          label={type.type.name}
-                          sx={{
-                            textTransform: 'capitalize',
-                            fontWeight: 500,
-                            backgroundColor: getTypeColor(type.type.name),
-                            color: 'white',
-                          }}
+                          typeName={type.type.name}
                         />
                       ))}
                     </Box>
@@ -436,30 +431,5 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
     </>
   );
 };
-
-function getTypeColor(type: string): string {
-  const typeColors: { [key: string]: string } = {
-    normal: '#A8A878',
-    fire: '#F08030',
-    water: '#6890F0',
-    electric: '#F8D030',
-    grass: '#78C850',
-    ice: '#98D8D8',
-    fighting: '#C03028',
-    poison: '#A040A0',
-    ground: '#E0C068',
-    flying: '#A890F0',
-    psychic: '#F85888',
-    bug: '#A8B820',
-    rock: '#B8A038',
-    ghost: '#705898',
-    dragon: '#7038F8',
-    dark: '#705848',
-    steel: '#B8B8D0',
-    fairy: '#EE99AC',
-  };
-  
-  return typeColors[type] || '#68A090';
-}
 
 export default PokemonDetail;

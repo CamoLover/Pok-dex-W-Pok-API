@@ -39,5 +39,13 @@
     "magnolia": "Even the mightiest Pokemon were once small and weak.",
     "laventon": "The more we learn about Pokemon, the more wondrous they become.",
     "nemona": "Every Pokemon has its own unique charm and personality."
+  },
+  "404": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist.",
+    "message": "The Pokémon you're looking for seems to have wandered off into the tall grass!",
+    "help": "Let's get you back on the right path.",
+    "goBack": "Go Back",
+    "home": "Home"
   }
 }
