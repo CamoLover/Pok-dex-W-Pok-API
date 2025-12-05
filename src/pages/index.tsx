@@ -14,7 +14,7 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLanguageChange }) => {
-  const placeholderCards = Array.from({ length: 25 }, (_, index) => index + 1);
+  const placeholderCards = Array.from({ length: 151 }, (_, index) => index + 1);
   const { t, ready } = useTranslation();
 
   return (
@@ -33,7 +33,6 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
         
         <Hero ready={ready} t={t} />
 
-        
         {/* Main Content */}
         <Box component="main" sx={{ flexGrow: 1, py: 6 }}>
           <Container maxWidth="xl">
@@ -49,21 +48,23 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
             >
               {ready ? t('hero.section_title') : 'Discover Pokémon'}
             </Typography>
-            <Grid 
-              container 
-              spacing={3} 
-              sx={{ 
+            <Grid
+              container
+              spacing={3}
+              sx={{
                 justifyContent: 'center',
-                px: { xs: 2, sm: 3 }
+                px: { xs: 2, sm: 3 },
               }}
             >
-              {placeholderCards.map((cardNumber) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={cardNumber}>
+              {placeholderCards.map((cardNumber, index) => (
+                <Grid xs={12} sm={6} md={4} lg={3} xl={2} component="div" key={cardNumber}>
                   <Card
                     sx={{
-                      height: 200,
+                      height: 250,
                       cursor: 'pointer',
                       transition: 'transform 0.2s, box-shadow 0.2s',
+                      display: 'flex',
+                      flexDirection: 'column',
                       '&:hover': {
                         transform: 'scale(1.05)',
                         boxShadow: (theme) => theme.shadows[8],
@@ -73,18 +74,48 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
                     <CardMedia
                       component="img"
                       height="200"
-                      image={`https://placehold.co/200x200/3f51b5/white?text=Pokemon+${cardNumber}`}
+                      image={`https://placehold.co/200x200/c00043/white?text=Pokemon+${cardNumber}`}
                       alt={`Pokémon ${cardNumber}`}
                       sx={{
                         objectFit: 'cover',
                       }}
                     />
+                    {/* Mini Footer */}
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        px: 2,
+                        py: 1,
+                        backgroundColor: 'background.paper',
+                      }}
+                    >
+                      <Box
+                        component="img"
+                        src="/images/logo.svg"
+                        alt="Pokédex Logo"
+                        sx={{
+                          width: 32,
+                          height: 32,
+                          cursor: 'pointer',
+                          objectFit: 'contain',
+                        }}
+                      />
+                      <Typography
+                        variant="h6"
+                        color="text.secondary"
+                      >
+                        N°{String(index + 1).padStart(3, '0')}
+                      </Typography>
+                    </Box>
                   </Card>
                 </Grid>
               ))}
             </Grid>
           </Container>
         </Box>
+
         
         <Footer language={language} />
       </Box>
