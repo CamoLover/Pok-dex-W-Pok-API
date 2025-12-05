@@ -1,0 +1,162 @@
+[
+  {
+    "professor": {
+      "en": "Professor Oak",
+      "fr": "Professeur Chen",
+      "es": "Profesor Oak",
+      "de": "Professor Eich",
+      "ja": "オーキド博士"
+    },
+    "quote": {
+      "en": "There's a time and place for everything, but not now!",
+      "fr": "Il y a un temps et un lieu pour tout, mais pas maintenant !",
+      "es": "¡Hay un tiempo y lugar para todo, pero no ahora!",
+      "de": "Für alles gibt es eine Zeit und einen Ort, aber nicht jetzt!",
+      "ja": "すべてには時と場所があるが、今ではない！"
+    }
+  },
+  {
+    "professor": {
+      "en": "Professor Elm",
+      "fr": "Professeur Orme",
+      "es": "Profesor Elm",
+      "de": "Professor Lind",
+      "ja": "ウツギ博士"
+    },
+    "quote": {
+      "en": "The important thing is not how long you live. It's what you accomplish with your life.",
+      "fr": "L'important n'est pas combien de temps tu vis. C'est ce que tu accomplis dans ta vie.",
+      "es": "Lo importante no es cuánto tiempo vives. Es lo que logras con tu vida.",
+      "de": "Wichtig ist nicht, wie lange du lebst. Wichtig ist, was du in deinem Leben erreichst.",
+      "ja": "大切なのはどれだけ長く生きるかではない。人生で何を成し遂げるかだ。"
+    }
+  },
+  {
+    "professor": {
+      "en": "Professor Birch",
+      "fr": "Professeur Seko",
+      "es": "Profesor Abedul",
+      "de": "Professor Birk",
+      "ja": "オダマキ博士"
+    },
+    "quote": {
+      "en": "Pokemon are living creatures that inhabit every corner of our world.",
+      "fr": "Les Pokémon sont des créatures vivantes qui habitent chaque coin de notre monde.",
+      "es": "Los Pokémon son criaturas vivientes que habitan cada rincón de nuestro mundo.",
+      "de": "Pokémon sind Lebewesen, die jeden Winkel unserer Welt bewohnen.",
+      "ja": "ポケモンは私たちの世界のあらゆる場所に住む生き物です。"
+    }
+  },
+  {
+    "professor": {
+      "en": "Professor Rowan",
+      "fr": "Professeur Sorbier",
+      "es": "Profesor Serbal",
+      "de": "Professor Eibe",
+      "ja": "ナナカマド博士"
+    },
+    "quote": {
+      "en": "The bond between Pokemon and trainer... That's what makes them strong.",
+      "fr": "Le lien entre Pokémon et dresseur... C'est ce qui les rend forts.",
+      "es": "El vínculo entre Pokémon y entrenador... Eso es lo que los hace fuertes.",
+      "de": "Die Bindung zwischen Pokémon und Trainer... Das macht sie stark.",
+      "ja": "ポケモンとトレーナーの絆...それが彼らを強くするのです。"
+    }
+  },
+  {
+    "professor": {
+      "en": "Professor Juniper",
+      "fr": "Professeur Keteleeria",
+      "es": "Profesora Encina",
+      "de": "Professor Esche",
+      "ja": "アララギ博士"
+    },
+    "quote": {
+      "en": "Dreams are the compass that guides us to our destination.",
+      "fr": "Les rêves sont la boussole qui nous guide vers notre destination.",
+      "es": "Los sueños son la brújula que nos guía hacia nuestro destino.",
+      "de": "Träume sind der Kompass, der uns zu unserem Ziel führt.",
+      "ja": "夢は私たちを目的地へと導くコンパスです。"
+    }
+  },
+  {
+    "professor": {
+      "en": "Professor Sycamore",
+      "fr": "Professeur Platane",
+      "es": "Profesor Ciprés",
+      "de": "Professor Platane",
+      "ja": "プラターヌ博士"
+    },
+    "quote": {
+      "en": "The key to Pokemon training is understanding your Pokemon's feelings.",
+      "fr": "La clé de l'entraînement Pokémon est de comprendre les sentiments de vos Pokémon.",
+      "es": "La clave del entrenamiento Pokémon es entender los sentimientos de tus Pokémon.",
+      "de": "Der Schlüssel zum Pokémon-Training ist es, die Gefühle deiner Pokémon zu verstehen.",
+      "ja": "ポケモンの訓練の鍵は、あなたのポケモンの気持ちを理解することです。"
+    }
+  },
+  {
+    "professor": {
+      "en": "Professor Kukui",
+      "fr": "Professeur Euphorbe",
+      "es": "Profesor Kukui",
+      "de": "Professor Kukui",
+      "ja": "ククイ博士"
+    },
+    "quote": {
+      "en": "Pokemon battles are about the bond between trainer and Pokemon!",
+      "fr": "Les combats Pokémon concernent le lien entre le dresseur et le Pokémon !",
+      "es": "¡Las batallas Pokémon se tratan del vínculo entre entrenador y Pokémon!",
+      "de": "Pokémon-Kämpfe handeln von der Bindung zwischen Trainer und Pokémon!",
+      "ja": "ポケモンバトルはトレーナーとポケモンの絆についてです！"
+    }
+  },
+  {
+    "professor": {
+      "en": "Professor Magnolia",
+      "fr": "Professeure Magnolia",
+      "es": "Profesora Magnolia",
+      "de": "Professor Magnolia",
+      "ja": "マグノリア博士"
+    },
+    "quote": {
+      "en": "Even the mightiest Pokemon were once small and weak.",
+      "fr": "Même les Pokémon les plus puissants étaient autrefois petits et faibles.",
+      "es": "Incluso los Pokémon más poderosos fueron una vez pequeños y débiles.",
+      "de": "Selbst die mächtigsten Pokémon waren einst klein und schwach.",
+      "ja": "最も強力なポケモンでさえ、かつては小さくて弱かったのです。"
+    }
+  },
+  {
+    "professor": {
+      "en": "Professor Laventon",
+      "fr": "Professeur Lavande",
+      "es": "Profesor Laventon",
+      "de": "Professor Lavendel",
+      "ja": "ラベン博士"
+    },
+    "quote": {
+      "en": "The more we learn about Pokemon, the more wondrous they become.",
+      "fr": "Plus nous en apprenons sur les Pokémon, plus ils deviennent merveilleux.",
+      "es": "Cuanto más aprendemos sobre los Pokémon, más maravillosos se vuelven.",
+      "de": "Je mehr wir über Pokémon lernen, desto wunderbarer werden sie.",
+      "ja": "ポケモンについて学ぶほど、彼らはより素晴らしい存在になります。"
+    }
+  },
+  {
+    "professor": {
+      "en": "Professor Nemona",
+      "fr": "Professeure Nemona",
+      "es": "Profesora Nemona",
+      "de": "Professor Nemona",
+      "ja": "ネモ博士"
+    },
+    "quote": {
+      "en": "Every Pokemon has its own unique charm and personality.",
+      "fr": "Chaque Pokémon a son propre charme et sa personnalité uniques.",
+      "es": "Cada Pokémon tiene su propio encanto y personalidad únicos.",
+      "de": "Jedes Pokémon hat seinen eigenen einzigartigen Charme und seine Persönlichkeit.",
+      "ja": "すべてのポケモンには独自の魅力と個性があります。"
+    }
+  }
+]
