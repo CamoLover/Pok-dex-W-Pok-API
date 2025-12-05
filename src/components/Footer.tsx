@@ -18,6 +18,8 @@ const Footer: React.FC<FooterProps> = ({ language }) => {
     setRandomQuote(professorQuotes[randomIndex]);
   }, []);
 
+  if (!isClient) return null;
+
   return (
     <Box
       component="footer"
@@ -38,7 +40,7 @@ const Footer: React.FC<FooterProps> = ({ language }) => {
             - {t(randomQuote.professorKey)}
           </Typography>
         </Box>
-        
+
         <Box sx={{ borderTop: '1px solid rgba(255, 255, 255, 0.2)', pt: 2 }}>
           <Typography variant="body2" sx={{ mb: 1 }}>
             {t('footer.powered_by')}{' '}
