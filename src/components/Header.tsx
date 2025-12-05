@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -28,6 +28,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ darkMode, onThemeToggle, language, onLanguageChange }) => {
   const [searchValue, setSearchValue] = useState('');
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
   const { t, ready } = useTranslation();
 
   const handleLanguageChange = (event: SelectChangeEvent) => {
@@ -43,6 +44,12 @@ const Header: React.FC<HeaderProps> = ({ darkMode, onThemeToggle, language, onLa
     console.log('Searching for:', searchValue);
   };
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null;
+  
   return (
     <AppBar position="static" sx={{ bgcolor: 'primary.main' }}>
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
