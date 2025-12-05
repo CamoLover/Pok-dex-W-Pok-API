@@ -35,59 +35,57 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
           sx={{
             height: '50vh',
             minHeight: '400px',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            backgroundImage: 'url("/images/hero.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             position: 'relative',
             overflow: 'hidden',
+            px: { xs: 2, md: 6 },
           }}
         >
-          <Box
+
+          <Container
+            maxWidth="md"
             sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'rgba(0, 0, 0, 0.3)',
+              textAlign: 'left',
+              position: 'relative',
+              zIndex: 1,
             }}
-          />
-          <Container maxWidth="md" sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
-            <Box
-              component="img"
-              src="/images/logo.svg"
-              alt="Pokédex Logo"
-              sx={{
-                width: { xs: 80, md: 120 },
-                height: { xs: 80, md: 120 },
-                mb: 3,
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
-              }}
-            />
-            <Typography
-              variant="h2"
-              component="h1"
-              sx={{
-                color: 'white',
-                fontWeight: 'bold',
-                mb: 2,
-                fontSize: { xs: '2.5rem', md: '3.5rem' },
-              }}
-            >
-              {ready ? t('page.title') : 'Pokédex - Gotta Catch \'Em All!'}
-            </Typography>
+          >
+
+          <Typography
+            variant="h2"
+            component="h1"
+            sx={{
+              color: 'black',
+              fontWeight: 'bold',
+              mb: 2,
+              fontSize: { xs: '2.5rem', md: '3.5rem' },
+              maxWidth: '15ch',
+              wordWrap: 'break-word',
+            }}
+          >
+            {ready ? t('page.title') : "Pokédex - Gotta Catch 'Em All!"}
+          </Typography>
+
+
             <Typography
               variant="h6"
               sx={{
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: 'rgba(0, 0, 0, 0.9)',
                 mb: 4,
                 fontSize: { xs: '1rem', md: '1.25rem' },
+                maxWidth: '45ch',
+                wordWrap: 'break-word',
               }}
             >
               {ready ? t('page.description') : 'Explore the world of Pokémon with our comprehensive Pokédex'}
             </Typography>
+
             <Button
               variant="contained"
               size="large"
@@ -106,6 +104,7 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
             </Button>
           </Container>
         </Box>
+
         
         {/* Main Content */}
         <Box component="main" sx={{ flexGrow: 1, py: 6 }}>

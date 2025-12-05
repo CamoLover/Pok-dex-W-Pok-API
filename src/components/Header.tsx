@@ -62,53 +62,6 @@ const Header: React.FC<HeaderProps> = ({ darkMode, onThemeToggle, language, onLa
           }}
         />
 
-        <Box
-          component="form"
-          onSubmit={handleSearch}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            flexGrow: 1,
-            maxWidth: 400,
-            mx: 3,
-          }}
-        >
-          <TextField
-            variant="outlined"
-            size="small"
-            placeholder={ready ? t('header.search.placeholder') : 'Search Pokémon...'}
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            sx={{
-              flexGrow: 1,
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: 'background.paper',
-                '& fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 0.23)',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 0.5)',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'secondary.main',
-                },
-              },
-            }}
-          />
-          <IconButton
-            type="submit"
-            sx={{
-              ml: 1,
-              color: 'white',
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              },
-            }}
-          >
-            <SearchIcon />
-          </IconButton>
-        </Box>
-
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <FormControl size="small" sx={{ minWidth: 80 }}>
             <Select
