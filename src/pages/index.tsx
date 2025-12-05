@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { Box, Grid, Card, CardMedia } from '@mui/material';
+import { Box, Grid, Card, CardMedia, Typography, Button, Container } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -23,39 +23,140 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
         <meta name="description" content={ready ? t('page.description') : 'Explore the world of Pokémon with our comprehensive Pokédex'} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
+        <link rel="apple-touch-icon" href="/images/logo.svg" />
       </Head>
       
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Header darkMode={darkMode} onThemeToggle={onThemeToggle} language={language} onLanguageChange={onLanguageChange} />
         
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <Grid container spacing={3} sx={{ maxWidth: 1200, mx: 'auto' }}>
-            {placeholderCards.map((cardNumber) => (
-              <Grid item xs={12} sm={6} md={4} lg={2.4} key={cardNumber}>
-                <Card
-                  sx={{
-                    height: 200,
-                    cursor: 'pointer',
-                    transition: 'transform 0.2s, box-shadow 0.2s',
-                    '&:hover': {
-                      transform: 'scale(1.05)',
-                      boxShadow: (theme) => theme.shadows[8],
-                    },
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={`https://placehold.co/200x200/3f51b5/white?text=Pokemon+${cardNumber}`}
-                    alt={`Pokémon ${cardNumber}`}
+        {/* Hero Section */}
+        <Box
+          sx={{
+            height: '50vh',
+            minHeight: '400px',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.3)',
+            }}
+          />
+          <Container maxWidth="md" sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+            <Box
+              component="img"
+              src="/images/logo.svg"
+              alt="Pokédex Logo"
+              sx={{
+                width: { xs: 80, md: 120 },
+                height: { xs: 80, md: 120 },
+                mb: 3,
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
+              }}
+            />
+            <Typography
+              variant="h2"
+              component="h1"
+              sx={{
+                color: 'white',
+                fontWeight: 'bold',
+                mb: 2,
+                fontSize: { xs: '2.5rem', md: '3.5rem' },
+              }}
+            >
+              {ready ? t('page.title') : 'Pokédex - Gotta Catch \'Em All!'}
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'rgba(255, 255, 255, 0.9)',
+                mb: 4,
+                fontSize: { xs: '1rem', md: '1.25rem' },
+              }}
+            >
+              {ready ? t('page.description') : 'Explore the world of Pokémon with our comprehensive Pokédex'}
+            </Typography>
+            <Button
+              variant="contained"
+              size="large"
+              sx={{
+                bgcolor: 'secondary.main',
+                color: 'white',
+                px: 4,
+                py: 1.5,
+                fontSize: '1.1rem',
+                '&:hover': {
+                  bgcolor: 'secondary.dark',
+                },
+              }}
+            >
+              {ready ? t('hero.button') : 'Start Exploring'}
+            </Button>
+          </Container>
+        </Box>
+        
+        {/* Main Content */}
+        <Box component="main" sx={{ flexGrow: 1, py: 6 }}>
+          <Container maxWidth="xl">
+            <Typography
+              variant="h4"
+              component="h2"
+              sx={{
+                textAlign: 'center',
+                mb: 4,
+                fontWeight: 'bold',
+                color: 'text.primary',
+              }}
+            >
+              {ready ? t('hero.section_title') : 'Discover Pokémon'}
+            </Typography>
+            <Grid 
+              container 
+              spacing={3} 
+              sx={{ 
+                justifyContent: 'center',
+                px: { xs: 2, sm: 3 }
+              }}
+            >
+              {placeholderCards.map((cardNumber) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={cardNumber}>
+                  <Card
                     sx={{
-                      objectFit: 'cover',
+                      height: 200,
+                      cursor: 'pointer',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                      '&:hover': {
+                        transform: 'scale(1.05)',
+                        boxShadow: (theme) => theme.shadows[8],
+                      },
                     }}
-                  />
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+                  >
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={`https://placehold.co/200x200/3f51b5/white?text=Pokemon+${cardNumber}`}
+                      alt={`Pokémon ${cardNumber}`}
+                      sx={{
+                        objectFit: 'cover',
+                      }}
+                    />
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
         </Box>
         
         <Footer language={language} />
