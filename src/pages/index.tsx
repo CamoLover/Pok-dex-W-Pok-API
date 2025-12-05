@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { Box, Grid, Card, CardMedia } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -13,12 +14,13 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLanguageChange }) => {
   const placeholderCards = Array.from({ length: 25 }, (_, index) => index + 1);
+  const { t, ready } = useTranslation();
 
   return (
     <>
       <Head>
-        <title>Pokédex - Gotta Catch 'Em All!</title>
-        <meta name="description" content="Explore the world of Pokémon with our comprehensive Pokédex" />
+        <title>{ready ? t('page.title') : 'Pokédex - Gotta Catch \'Em All!'}</title>
+        <meta name="description" content={ready ? t('page.description') : 'Explore the world of Pokémon with our comprehensive Pokédex'} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

@@ -1,0 +1,39 @@
+{
+  "page": {
+    "title": "Pokédex - ¡Hazte con todos!",
+    "description": "Explora el mundo de los Pokémon con nuestra Pokédex completa"
+  },
+  "header": {
+    "search": {
+      "placeholder": "Buscar Pokémon..."
+    }
+  },
+  "footer": {
+    "powered_by": "Powered by",
+    "copyright": "© 2024 App Pokédex. Hecho con ❤️ para entrenadores Pokémon de todo el mundo."
+  },
+  "professor": {
+    "oak": "Profesor Oak",
+    "elm": "Profesor Elm",
+    "birch": "Profesor Abedul",
+    "rowan": "Profesor Serbal",
+    "juniper": "Profesora Encina",
+    "sycamore": "Profesor Ciprés",
+    "kukui": "Profesor Kukui",
+    "magnolia": "Profesora Magnolia",
+    "laventon": "Profesor Laventon",
+    "nemona": "Profesora Nemona"
+  },
+  "quote": {
+    "oak": "¡Hay un tiempo y lugar para todo, pero no ahora!",
+    "elm": "Lo importante no es cuánto tiempo vives. Es lo que logras con tu vida.",
+    "birch": "Los Pokémon son criaturas vivientes que habitan cada rincón de nuestro mundo.",
+    "rowan": "El vínculo entre Pokémon y entrenador... Eso es lo que los hace fuertes.",
+    "juniper": "Los sueños son la brújula que nos guía hacia nuestro destino.",
+    "sycamore": "La clave del entrenamiento Pokémon es entender los sentimientos de tus Pokémon.",
+    "kukui": "¡Las batallas Pokémon se tratan del vínculo entre entrenador y Pokémon!",
+    "magnolia": "Incluso los Pokémon más poderosos fueron una vez pequeños y débiles.",
+    "laventon": "Cuanto más aprendemos sobre los Pokémon, más maravillosos se vuelven.",
+    "nemona": "Cada Pokémon tiene su propio encanto y personalidad únicos."
+  }
+}

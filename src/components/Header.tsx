@@ -16,6 +16,7 @@ import {
   DarkMode,
 } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 interface HeaderProps {
   darkMode: boolean;
@@ -27,6 +28,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ darkMode, onThemeToggle, language, onLanguageChange }) => {
   const [searchValue, setSearchValue] = useState('');
   const router = useRouter();
+  const { t, ready } = useTranslation();
 
   const handleLanguageChange = (event: SelectChangeEvent) => {
     onLanguageChange(event.target.value);
@@ -73,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, onThemeToggle, language, onLa
           <TextField
             variant="outlined"
             size="small"
-            placeholder="Search Pokémon..."
+            placeholder={ready ? t('header.search.placeholder') : 'Search Pokémon...'}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             sx={{

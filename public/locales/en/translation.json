@@ -1,0 +1,39 @@
+{
+  "page": {
+    "title": "Pokédex - Gotta Catch 'Em All!",
+    "description": "Explore the world of Pokémon with our comprehensive Pokédex"
+  },
+  "header": {
+    "search": {
+      "placeholder": "Search Pokémon..."
+    }
+  },
+  "footer": {
+    "powered_by": "Powered by",
+    "copyright": "© 2024 Pokédex App. Made with ❤️ for Pokémon trainers everywhere."
+  },
+  "professor": {
+    "oak": "Professor Oak",
+    "elm": "Professor Elm",
+    "birch": "Professor Birch",
+    "rowan": "Professor Rowan",
+    "juniper": "Professor Juniper",
+    "sycamore": "Professor Sycamore",
+    "kukui": "Professor Kukui",
+    "magnolia": "Professor Magnolia",
+    "laventon": "Professor Laventon",
+    "nemona": "Professor Nemona"
+  },
+  "quote": {
+    "oak": "There's a time and place for everything, but not now!",
+    "elm": "The important thing is not how long you live. It's what you accomplish with your life.",
+    "birch": "Pokemon are living creatures that inhabit every corner of our world.",
+    "rowan": "The bond between Pokemon and trainer... That's what makes them strong.",
+    "juniper": "Dreams are the compass that guides us to our destination.",
+    "sycamore": "The key to Pokemon training is understanding your Pokemon's feelings.",
+    "kukui": "Pokemon battles are about the bond between trainer and Pokemon!",
+    "magnolia": "Even the mightiest Pokemon were once small and weak.",
+    "laventon": "The more we learn about Pokemon, the more wondrous they become.",
+    "nemona": "Every Pokemon has its own unique charm and personality."
+  }
+}

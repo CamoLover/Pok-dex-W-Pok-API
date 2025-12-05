@@ -1,0 +1,39 @@
+{
+  "page": {
+    "title": "Pokédex - Schnapp sie dir alle!",
+    "description": "Erkunde die Welt der Pokémon mit unserem umfassenden Pokédex"
+  },
+  "header": {
+    "search": {
+      "placeholder": "Pokémon suchen..."
+    }
+  },
+  "footer": {
+    "powered_by": "Unterstützt von",
+    "copyright": "© 2024 Pokédex App. Mit ❤️ für Pokémon-Trainer weltweit gemacht."
+  },
+  "professor": {
+    "oak": "Professor Eich",
+    "elm": "Professor Lind",
+    "birch": "Professor Birk",
+    "rowan": "Professor Eibe",
+    "juniper": "Professor Esche",
+    "sycamore": "Professor Platane",
+    "kukui": "Professor Kukui",
+    "magnolia": "Professor Magnolia",
+    "laventon": "Professor Lavendel",
+    "nemona": "Professor Nemona"
+  },
+  "quote": {
+    "oak": "Für alles gibt es eine Zeit und einen Ort, aber nicht jetzt!",
+    "elm": "Wichtig ist nicht, wie lange du lebst. Wichtig ist, was du in deinem Leben erreichst.",
+    "birch": "Pokémon sind Lebewesen, die jeden Winkel unserer Welt bewohnen.",
+    "rowan": "Die Bindung zwischen Pokémon und Trainer... Das macht sie stark.",
+    "juniper": "Träume sind der Kompass, der uns zu unserem Ziel führt.",
+    "sycamore": "Der Schlüssel zum Pokémon-Training ist es, die Gefühle deiner Pokémon zu verstehen.",
+    "kukui": "Pokémon-Kämpfe handeln von der Bindung zwischen Trainer und Pokémon!",
+    "magnolia": "Selbst die mächtigsten Pokémon waren einst klein und schwach.",
+    "laventon": "Je mehr wir über Pokémon lernen, desto wunderbarer werden sie.",
+    "nemona": "Jedes Pokémon hat seinen eigenen einzigartigen Charme und seine Persönlichkeit."
+  }
+}

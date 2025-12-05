@@ -1,0 +1,39 @@
+{
+  "page": {
+    "title": "Pokédex - Attrapez-les tous !",
+    "description": "Explorez le monde des Pokémon avec notre Pokédex complet"
+  },
+  "header": {
+    "search": {
+      "placeholder": "Rechercher un Pokémon..."
+    }
+  },
+  "footer": {
+    "powered_by": "Propulsé par",
+    "copyright": "© 2024 App Pokédex. Fait avec ❤️ pour les dresseurs Pokémon du monde entier."
+  },
+  "professor": {
+    "oak": "Professeur Chen",
+    "elm": "Professeur Orme",
+    "birch": "Professeur Seko",
+    "rowan": "Professeur Sorbier",
+    "juniper": "Professeur Keteleeria",
+    "sycamore": "Professeur Platane",
+    "kukui": "Professeur Euphorbe",
+    "magnolia": "Professeure Magnolia",
+    "laventon": "Professeur Lavande",
+    "nemona": "Professeure Nemona"
+  },
+  "quote": {
+    "oak": "Il y a un temps et un lieu pour tout, mais pas maintenant !",
+    "elm": "L'important n'est pas combien de temps tu vis. C'est ce que tu accomplis dans ta vie.",
+    "birch": "Les Pokémon sont des créatures vivantes qui habitent chaque coin de notre monde.",
+    "rowan": "Le lien entre Pokémon et dresseur... C'est ce qui les rend forts.",
+    "juniper": "Les rêves sont la boussole qui nous guide vers notre destination.",
+    "sycamore": "La clé de l'entraînement Pokémon est de comprendre les sentiments de vos Pokémon.",
+    "kukui": "Les combats Pokémon concernent le lien entre le dresseur et le Pokémon !",
+    "magnolia": "Même les Pokémon les plus puissants étaient autrefois petits et faibles.",
+    "laventon": "Plus nous en apprenons sur les Pokémon, plus ils deviennent merveilleux.",
+    "nemona": "Chaque Pokémon a son propre charme et sa personnalité uniques."
+  }
+}
