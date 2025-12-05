@@ -72,6 +72,9 @@ const Header: React.FC<HeaderProps> = ({ darkMode, onThemeToggle, language, onLa
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <FormControl size="small" sx={{ minWidth: 80 }}>
             <Select
+              MenuProps={{
+                disableScrollLock: true,
+              }}
               value={language}
               onChange={handleLanguageChange}
               sx={{

@@ -24,7 +24,7 @@ const Footer: React.FC<FooterProps> = ({ language }) => {
     <Box
       component="footer"
       sx={{
-        backgroundColor: 'primary.main',
+        backgroundColor: 'custom.footerBackground',
         color: 'white',
         py: 3,
         px: 2,

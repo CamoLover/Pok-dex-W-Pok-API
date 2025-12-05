@@ -36,7 +36,7 @@ const Hero: React.FC<HeroProps> = ({ ready, t }) => {
           variant="h2"
           component="h1"
           sx={{
-            color: 'black',
+            color: 'text.primary',
             fontWeight: 'bold',
             mb: 2,
             fontSize: { xs: '2.5rem', md: '3.5rem' },
@@ -50,7 +50,7 @@ const Hero: React.FC<HeroProps> = ({ ready, t }) => {
         <Typography
           variant="h6"
           sx={{
-            color: 'rgba(0, 0, 0, 0.9)',
+            color: 'text.secondary',
             mb: 4,
             fontSize: { xs: '1rem', md: '1.25rem' },
             maxWidth: '45ch',
