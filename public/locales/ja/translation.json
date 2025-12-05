@@ -12,6 +12,10 @@
     "powered_by": "Powered by",
     "copyright": "© 2024 ポケモン図鑑アプリ。世界中のポケモントレーナーのために❤️を込めて作成。"
   },
+  "hero": {
+    "button": "探索を始める",
+    "section_title": "ポケモンを発見"
+  },
   "professor": {
     "oak": "オーキド博士",
     "elm": "ウツギ博士",

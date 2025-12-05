@@ -12,6 +12,10 @@
     "powered_by": "Unterstützt von",
     "copyright": "© 2024 Pokédex App. Mit ❤️ für Pokémon-Trainer weltweit gemacht."
   },
+  "hero": {
+    "button": "Entdeckung beginnen",
+    "section_title": "Pokémon entdecken"
+  },
   "professor": {
     "oak": "Professor Eich",
     "elm": "Professor Lind",

@@ -48,13 +48,14 @@ const Header: React.FC<HeaderProps> = ({ darkMode, onThemeToggle, language, onLa
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
         <Box
           component="img"
-          src="https://placehold.co/40x40/3f51b5/white?text=P"
+          src="/images/logo.svg"
           alt="Pokédex Logo"
           onClick={handleLogoClick}
           sx={{
             width: 40,
             height: 40,
             cursor: 'pointer',
+            objectFit: 'contain',
             '&:hover': {
               opacity: 0.8,
             },

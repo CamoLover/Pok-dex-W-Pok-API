@@ -12,6 +12,10 @@
     "powered_by": "Powered by",
     "copyright": "© 2024 App Pokédex. Hecho con ❤️ para entrenadores Pokémon de todo el mundo."
   },
+  "hero": {
+    "button": "Empezar a explorar",
+    "section_title": "Descubrir Pokémon"
+  },
   "professor": {
     "oak": "Profesor Oak",
     "elm": "Profesor Elm",
