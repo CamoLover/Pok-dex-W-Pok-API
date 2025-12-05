@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, Button } from '@mui/material';
 
 interface HeroProps {
@@ -7,6 +7,11 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ ready, t }) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   return (
     <Box
       sx={{
@@ -44,7 +49,7 @@ const Hero: React.FC<HeroProps> = ({ ready, t }) => {
             wordWrap: 'break-word',
           }}
         >
-          {ready ? t('page.title') : 'Pokédex - Gotta Catch \'Em All!'}
+          {isClient && ready ? t('page.title') : 'Pokédex - Gotta Catch \'Em All!'}
         </Typography>
 
         <Typography
@@ -57,7 +62,7 @@ const Hero: React.FC<HeroProps> = ({ ready, t }) => {
             wordWrap: 'break-word',
           }}
         >
-          {ready
+          {isClient && ready
             ? t('page.description')
             : 'Explore the world of Pokémon with our comprehensive Pokédex'}
         </Typography>
@@ -76,7 +81,7 @@ const Hero: React.FC<HeroProps> = ({ ready, t }) => {
             },
           }}
         >
-          {ready ? t('hero.button') : 'Start Exploring'}
+          {isClient && ready ? t('hero.button') : 'Start Exploring'}
         </Button>
       </Container>
     </Box>

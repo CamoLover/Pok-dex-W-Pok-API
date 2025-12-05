@@ -5,6 +5,7 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import { lightTheme, darkTheme } from "../theme/theme";
 import "../lib/i18n";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [darkMode, setDarkMode] = useState(false);
@@ -12,13 +13,30 @@ export default function App({ Component, pageProps }: AppProps) {
   const { i18n } = useTranslation();
 
   const toggleTheme = () => {
-    setDarkMode(!darkMode);
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    Cookies.set('theme', newDarkMode ? 'dark' : 'light', { expires: 365 });
   };
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
     i18n.changeLanguage(newLanguage);
+    Cookies.set('language', newLanguage, { expires: 365 });
   };
+
+  useEffect(() => {
+    const savedTheme = Cookies.get('theme');
+    const savedLanguage = Cookies.get('language');
+    
+    if (savedTheme) {
+      setDarkMode(savedTheme === 'dark');
+    }
+    
+    if (savedLanguage) {
+      setLanguage(savedLanguage);
+      i18n.changeLanguage(savedLanguage);
+    }
+  }, [i18n]);
 
   useEffect(() => {
     i18n.changeLanguage(language);

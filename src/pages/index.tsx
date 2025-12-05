@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { Box, Grid, Card, CardMedia, Typography, Button, Container } from '@mui/material';
+import { Box, Grid, Card, Typography, Container, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/router';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Hero from '../components/Hero';
+import PokemonImage from '../components/PokemonImage';
+import { fetchAllPokemon, fetchPokemonSpecies, PokemonListItem, getPokemonImageUrl, getLocalizedName } from '../lib/pokeapi';
 
 interface HomeProps {
   darkMode: boolean;
@@ -13,15 +16,96 @@ interface HomeProps {
   onLanguageChange: (language: string) => void;
 }
 
+interface PokemonWithTranslation extends PokemonListItem {
+  translatedName?: string;
+}
+
 const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLanguageChange }) => {
-  const placeholderCards = Array.from({ length: 151 }, (_, index) => index + 1);
+  const [pokemon, setPokemon] = useState<PokemonWithTranslation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false);
   const { t, ready } = useTranslation();
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    const loadPokemon = async () => {
+      try {
+        setLoading(true);
+        const allPokemon = await fetchAllPokemon();
+        setPokemon(allPokemon.map(p => ({ ...p, translatedName: undefined })));
+      } catch (error) {
+        console.error('Error loading Pokemon:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (isClient) {
+      loadPokemon();
+    }
+  }, [isClient]);
+
+  useEffect(() => {
+    if (!isClient || pokemon.length === 0 || language === 'en') {
+      return;
+    }
+
+    const loadTranslatedNames = async () => {
+      // Load translations in batches to avoid overwhelming the API
+      const batchSize = 50;
+      const batches = [];
+      
+      for (let i = 0; i < Math.min(pokemon.length, 300); i += batchSize) { // Only translate first 300 for performance
+        batches.push(pokemon.slice(i, i + batchSize));
+      }
+
+      for (const batch of batches) {
+        try {
+          const translationPromises = batch.map(async (poke) => {
+            try {
+              const species = await fetchPokemonSpecies(poke.id);
+              const translatedName = getLocalizedName(species.names, language);
+              return { id: poke.id, translatedName };
+            } catch {
+              return { id: poke.id, translatedName: poke.name };
+            }
+          });
+
+          const translations = await Promise.all(translationPromises);
+          
+          setPokemon(prevPokemon => 
+            prevPokemon.map(poke => {
+              const translation = translations.find(t => t.id === poke.id);
+              return translation 
+                ? { ...poke, translatedName: translation.translatedName }
+                : poke;
+            })
+          );
+        } catch (error) {
+          console.error('Error loading translations for batch:', error);
+        }
+        
+        // Small delay between batches to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+    };
+
+    loadTranslatedNames();
+  }, [language, isClient, pokemon.length]);
+
+  const handlePokemonClick = (id: number) => {
+    router.push(`/pokemon/${id}`);
+  };
 
   return (
     <>
       <Head>
-        <title>{ready ? t('page.title') : 'Pokédex - Gotta Catch \'Em All!'}</title>
-        <meta name="description" content={ready ? t('page.description') : 'Explore the world of Pokémon with our comprehensive Pokédex'} />
+        <title>{isClient && ready ? t('page.title') : 'Pokédex - Gotta Catch \'Em All!'}</title>
+        <meta name="description" content={isClient && ready ? t('page.description') : 'Explore the world of Pokémon with our comprehensive Pokédex'} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
@@ -46,73 +130,82 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
                 color: 'text.primary',
               }}
             >
-              {ready ? t('hero.section_title') : 'Discover Pokémon'}
+              {isClient && ready ? t('hero.section_title') : 'Discover Pokémon'}
             </Typography>
-            <Grid
-              container
-              spacing={3}
-              sx={{
-                justifyContent: 'center',
-                px: { xs: 2, sm: 3 },
-              }}
-            >
-              {placeholderCards.map((cardNumber, index) => (
-                <Grid component="div" key={cardNumber}>
-                  <Card
-                    sx={{
-                      height: 250,
-                      cursor: 'pointer',
-                      transition: 'transform 0.2s, box-shadow 0.2s',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      '&:hover': {
-                        transform: 'scale(1.05)',
-                        boxShadow: (theme) => theme.shadows[8],
-                      },
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      height="200"
-                      image={`https://placehold.co/200x200/c00043/white?text=Pokemon+${cardNumber}`}
-                      alt={`Pokémon ${cardNumber}`}
+            
+            {loading ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+                <CircularProgress size={60} />
+              </Box>
+            ) : (
+              <Grid
+                container
+                spacing={3}
+                sx={{
+                  justifyContent: 'center',
+                  px: { xs: 2, sm: 3 },
+                }}
+              >
+                {pokemon.map((pokemonItem) => (
+                  <Grid component="div" key={pokemonItem.id}>
+                    <Card
+                      onClick={() => handlePokemonClick(pokemonItem.id)}
                       sx={{
-                        objectFit: 'cover',
-                      }}
-                    />
-                    {/* Mini Footer */}
-                    <Box
-                      sx={{
+                        height: 250,
+                        width: 200,
+                        cursor: 'pointer',
+                        transition: 'transform 0.2s, box-shadow 0.2s',
                         display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        px: 2,
-                        py: 1,
-                        backgroundColor: 'background.paper',
+                        flexDirection: 'column',
+                        '&:hover': {
+                          transform: 'scale(1.05)',
+                          boxShadow: (theme) => theme.shadows[8],
+                        },
                       }}
                     >
-                      <Box
-                        component="img"
-                        src="/images/logo.svg"
-                        alt="Pokédex Logo"
+                      <PokemonImage
+                        src={getPokemonImageUrl(pokemonItem.id)}
+                        alt={pokemonItem.name}
+                        height="200"
                         sx={{
-                          width: 32,
-                          height: 32,
-                          cursor: 'pointer',
                           objectFit: 'contain',
+                          backgroundColor: 'rgba(0,0,0,0.02)',
                         }}
                       />
-                      <Typography
-                        variant="h6"
-                        color="text.secondary"
+                      {/* Mini Footer */}
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          px: 2,
+                          py: 1,
+                          backgroundColor: 'background.paper',
+                        }}
                       >
-                        N°{String(index + 1).padStart(3, '0')}
-                      </Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+                        <Typography
+                          variant="body2"
+                          color="text.primary"
+                          sx={{
+                            fontWeight: 500,
+                            textTransform: 'capitalize',
+                            fontSize: '0.9rem',
+                          }}
+                        >
+                          {pokemonItem.translatedName || pokemonItem.name}
+                        </Typography>
+                        <Typography
+                          variant="h6"
+                          color="text.secondary"
+                        >
+                          N°{String(pokemonItem.id).padStart(3, '0')}
+                        </Typography>
+                      </Box>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            )}
           </Container>
         </Box>
 
