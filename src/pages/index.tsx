@@ -57,7 +57,7 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
               }}
             >
               {placeholderCards.map((cardNumber, index) => (
-                <Grid xs={12} sm={6} md={4} lg={3} xl={2} component="div" key={cardNumber}>
+                <Grid component="div" key={cardNumber}>
                   <Card
                     sx={{
                       height: 250,
