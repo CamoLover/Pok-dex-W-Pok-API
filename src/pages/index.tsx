@@ -42,7 +42,6 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
     setIsClient(true);
   }, []);
 
-  // Load all Pokemon names for search functionality
   useEffect(() => {
     const loadAllPokemonNames = async () => {
       if (!isClient || allPokemon.length > 0) return;
@@ -85,12 +84,10 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
     }
   }, [isClient]);
 
-  // Reset search results display count when query changes
   useEffect(() => {
     setSearchResultsDisplayCount(60);
   }, [searchQuery]);
 
-  // Filter from allPokemon if searching, otherwise get loaded pokemon from allPokemon
   const allFilteredPokemon = searchQuery
     ? allPokemon.filter((poke) => {
         const query = searchQuery.toLowerCase();
@@ -102,7 +99,7 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
                pokeId.includes(query) ||
                translatedName.includes(query);
       })
-    : allPokemon.slice(0, offset); // Show loaded count from allPokemon (which has translations)
+    : allPokemon.slice(0, offset);
 
   // Display only the first N results
   const filteredPokemon = searchQuery
@@ -141,14 +138,24 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
     };
   }, [hasMore, loadingMore, loadMorePokemon, searchQuery, hasMoreSearchResults, loadMoreSearchResults]);
 
+  useEffect(() => {
+    if (!isClient || allPokemon.length === 0) return;
+
+    setAllPokemon(prevPokemon =>
+      prevPokemon.map(poke => ({ ...poke, translatedName: undefined }))
+    );
+  }, [language, isClient]);
+
   // Load all translations progressively in background
   useEffect(() => {
-    if (!isClient || allPokemon.length === 0 || language === 'en') {
+    if (!isClient || allPokemon.length === 0) {
+      return;
+    }
+    if (language === 'en') {
       return;
     }
 
     const loadAllTranslations = async () => {
-      // Get all Pokemon that need translation
       const pokemonToTranslate = allPokemon
         .filter(poke => !poke.translatedName && poke.id > 0 && poke.id <= TOTAL_POKEMON);
 
@@ -161,7 +168,7 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
         batches.push(pokemonToTranslate.slice(i, i + batchSize));
       }
 
-      // Process batches one at a time
+      // Process batches one at a time (50 by 50)
       for (const batch of batches) {
         try {
           const translationPromises = batch.map(async (poke) => {
@@ -292,7 +299,6 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
                             backgroundColor: 'rgba(0,0,0,0.02)',
                           }}
                         />
-                        {/* Mini Footer */}
                         <Box
                           sx={{
                             display: 'flex',
@@ -326,7 +332,7 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
                   ))}
                 </Grid>
 
-                {/* No results message */}
+                {/* No results msg */}
                 {filteredPokemon.length === 0 && searchQuery && (
                   <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
                     <Typography variant="h6" color="text.secondary">

@@ -305,11 +305,9 @@ const Custom404: React.FC<Custom404Props> = ({
   );
 };
 
-// This function gets called at build time
 export async function getStaticProps() {
-  // You can add any data fetching here if needed
   return {
-    props: {}, // Will be passed to the page component as props
+    props: {}, 
   };
 }
 
