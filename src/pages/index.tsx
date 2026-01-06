@@ -138,26 +138,27 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
     };
   }, [hasMore, loadingMore, loadMorePokemon, searchQuery, hasMoreSearchResults, loadMoreSearchResults]);
 
-  useEffect(() => {
-    if (!isClient || allPokemon.length === 0) return;
-
-    setAllPokemon(prevPokemon =>
-      prevPokemon.map(poke => ({ ...poke, translatedName: undefined }))
-    );
-  }, [language, isClient]);
-
   // Load all translations progressively in background
   useEffect(() => {
     if (!isClient || allPokemon.length === 0) {
       return;
     }
     if (language === 'en') {
+      // For English, clear all translations since we use the base name
+      setAllPokemon(prevPokemon =>
+        prevPokemon.map(poke => ({ ...poke, translatedName: undefined }))
+      );
       return;
     }
 
     const loadAllTranslations = async () => {
+      // Reset translations when language changes
+      setAllPokemon(prevPokemon =>
+        prevPokemon.map(poke => ({ ...poke, translatedName: undefined }))
+      );
+
       const pokemonToTranslate = allPokemon
-        .filter(poke => !poke.translatedName && poke.id > 0 && poke.id <= TOTAL_POKEMON);
+        .filter(poke => poke.id > 0 && poke.id <= TOTAL_POKEMON);
 
       if (pokemonToTranslate.length === 0) return;
 
@@ -202,7 +203,7 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
     };
 
     loadAllTranslations();
-  }, [language, isClient, allPokemon.length]);
+  }, [language, isClient]);
 
   const handlePokemonClick = (id: number) => {
     router.push(`/pokemon/${id}`);
