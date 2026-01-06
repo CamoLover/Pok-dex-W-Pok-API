@@ -8,6 +8,11 @@
       "placeholder": "Buscar Pokémon..."
     }
   },
+  "search": {
+    "placeholder": "Buscar Pokémon por nombre o número...",
+    "no_results": "No se encontró ningún Pokémon que coincida con",
+    "load_more_hint": "Desplázate hacia abajo para cargar más Pokémon"
+  },
   "footer": {
     "powered_by": "Powered by",
     "copyright": "© 2025 App Pokédex. Hecho con ❤️ para entrenadores Pokémon de todo el mundo."
@@ -15,6 +20,22 @@
   "hero": {
     "button": "Empezar a explorar",
     "section_title": "Descubrir Pokémon"
+  },
+  "pokemon": {
+    "not_found": "Pokémon no encontrado",
+    "shiny": "Variocolor",
+    "details": "Detalles",
+    "height": "Altura",
+    "weight": "Peso",
+    "abilities": "Habilidades",
+    "play_cry": "Reproducir grito",
+    "stop_cry": "Detener grito",
+    "view_moves": "Ver movimientos",
+    "moves_title": "Movimientos",
+    "type": "Tipo",
+    "power": "Potencia",
+    "pp": "PP",
+    "loading": "Cargando..."
   },
   "professor": {
     "oak": "Profesor Oak",

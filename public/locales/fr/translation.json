@@ -8,6 +8,11 @@
       "placeholder": "Rechercher un Pokémon..."
     }
   },
+  "search": {
+    "placeholder": "Rechercher un Pokémon par nom ou numéro...",
+    "no_results": "Aucun Pokémon trouvé correspondant à",
+    "load_more_hint": "Faites défiler vers le bas pour charger plus de Pokémon"
+  },
   "footer": {
     "powered_by": "Propulsé par",
     "copyright": "© 2025 App Pokédex. Fait avec ❤️ pour les dresseurs Pokémon du monde entier."
@@ -15,6 +20,22 @@
   "hero": {
     "button": "Commencer l'exploration",
     "section_title": "Découvrir les Pokémon"
+  },
+  "pokemon": {
+    "not_found": "Pokémon introuvable",
+    "shiny": "Chromatique",
+    "details": "Détails",
+    "height": "Taille",
+    "weight": "Poids",
+    "abilities": "Talents",
+    "play_cry": "Jouer le cri",
+    "stop_cry": "Arrêter le cri",
+    "view_moves": "Voir les capacités",
+    "moves_title": "Capacités",
+    "type": "Type",
+    "power": "Puissance",
+    "pp": "PP",
+    "loading": "Chargement..."
   },
   "professor": {
     "oak": "Professeur Chen",

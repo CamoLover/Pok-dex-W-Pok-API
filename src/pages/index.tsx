@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Head from 'next/head';
-import { Box, Grid, Card, Typography, Container, CircularProgress } from '@mui/material';
+import { Box, Grid, Card, Typography, Container, CircularProgress, TextField, InputAdornment } from '@mui/material';
+import { Search as SearchIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import Header from '../components/Header';
@@ -22,11 +23,14 @@ interface PokemonWithTranslation extends PokemonListItem {
 
 const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLanguageChange }) => {
   const [pokemon, setPokemon] = useState<PokemonWithTranslation[]>([]);
+  const [allPokemon, setAllPokemon] = useState<PokemonWithTranslation[]>([]); // Store all pokemon for search
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [offset, setOffset] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResultsDisplayCount, setSearchResultsDisplayCount] = useState(60);
   const { t, ready } = useTranslation();
   const router = useRouter();
   const observerTarget = useRef<HTMLDivElement>(null);
@@ -37,6 +41,22 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Load all Pokemon names for search functionality
+  useEffect(() => {
+    const loadAllPokemonNames = async () => {
+      if (!isClient || allPokemon.length > 0) return;
+
+      try {
+        const allPokeData = await fetchPokemonPaginated(0, TOTAL_POKEMON);
+        setAllPokemon(allPokeData.map(p => ({ ...p, translatedName: undefined })));
+      } catch (error) {
+        console.error('Error loading all Pokemon names:', error);
+      }
+    };
+
+    loadAllPokemonNames();
+  }, [isClient]);
 
   const loadMorePokemon = useCallback(async () => {
     if (loadingMore || !hasMore) return;
@@ -65,11 +85,45 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
     }
   }, [isClient]);
 
+  // Reset search results display count when query changes
+  useEffect(() => {
+    setSearchResultsDisplayCount(60);
+  }, [searchQuery]);
+
+  // Filter from allPokemon if searching, otherwise get loaded pokemon from allPokemon
+  const allFilteredPokemon = searchQuery
+    ? allPokemon.filter((poke) => {
+        const query = searchQuery.toLowerCase();
+        const pokeName = poke.name.toLowerCase();
+        const pokeId = String(poke.id);
+        const translatedName = poke.translatedName?.toLowerCase() || '';
+
+        return pokeName.includes(query) ||
+               pokeId.includes(query) ||
+               translatedName.includes(query);
+      })
+    : allPokemon.slice(0, offset); // Show loaded count from allPokemon (which has translations)
+
+  // Display only the first N results
+  const filteredPokemon = searchQuery
+    ? allFilteredPokemon.slice(0, searchResultsDisplayCount)
+    : allFilteredPokemon;
+
+  const hasMoreSearchResults = searchQuery && allFilteredPokemon.length > searchResultsDisplayCount;
+
+  const loadMoreSearchResults = useCallback(() => {
+    setSearchResultsDisplayCount(prev => prev + 60);
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting && hasMore && !loadingMore) {
-          loadMorePokemon();
+        if (entries[0].isIntersecting) {
+          if (searchQuery && hasMoreSearchResults) {
+            loadMoreSearchResults();
+          } else if (!searchQuery && hasMore && !loadingMore) {
+            loadMorePokemon();
+          }
         }
       },
       { threshold: 0.1 }
@@ -85,22 +139,29 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
         observer.unobserve(currentTarget);
       }
     };
-  }, [hasMore, loadingMore, loadMorePokemon]);
+  }, [hasMore, loadingMore, loadMorePokemon, searchQuery, hasMoreSearchResults, loadMoreSearchResults]);
 
+  // Load all translations progressively in background
   useEffect(() => {
-    if (!isClient || pokemon.length === 0 || language === 'en') {
+    if (!isClient || allPokemon.length === 0 || language === 'en') {
       return;
     }
 
-    const loadTranslatedNames = async () => {
-      // Load translations in batches to avoid overwhelming the API
-      const batchSize = 50;
+    const loadAllTranslations = async () => {
+      // Get all Pokemon that need translation
+      const pokemonToTranslate = allPokemon
+        .filter(poke => !poke.translatedName && poke.id > 0 && poke.id <= TOTAL_POKEMON);
+
+      if (pokemonToTranslate.length === 0) return;
+
+      const batchSize = 50; // Process 50 at a time
       const batches = [];
-      
-      for (let i = 0; i < Math.min(pokemon.length, 300); i += batchSize) { // Only translate first 300 for performance
-        batches.push(pokemon.slice(i, i + batchSize));
+
+      for (let i = 0; i < pokemonToTranslate.length; i += batchSize) {
+        batches.push(pokemonToTranslate.slice(i, i + batchSize));
       }
 
+      // Process batches one at a time
       for (const batch of batches) {
         try {
           const translationPromises = batch.map(async (poke) => {
@@ -108,17 +169,18 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
               const species = await fetchPokemonSpecies(poke.id);
               const translatedName = getLocalizedName(species.names, language);
               return { id: poke.id, translatedName };
-            } catch {
+            } catch (error) {
+              console.error(`Error fetching species for Pokemon ${poke.id}:`, error);
               return { id: poke.id, translatedName: poke.name };
             }
           });
 
           const translations = await Promise.all(translationPromises);
-          
-          setPokemon(prevPokemon => 
+
+          setAllPokemon(prevPokemon =>
             prevPokemon.map(poke => {
               const translation = translations.find(t => t.id === poke.id);
-              return translation 
+              return translation
                 ? { ...poke, translatedName: translation.translatedName }
                 : poke;
             })
@@ -126,14 +188,14 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
         } catch (error) {
           console.error('Error loading translations for batch:', error);
         }
-        
-        // Small delay between batches to avoid rate limiting
-        await new Promise(resolve => setTimeout(resolve, 100));
+
+        // Delay between batches to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 150));
       }
     };
 
-    loadTranslatedNames();
-  }, [language, isClient, pokemon.length]);
+    loadAllTranslations();
+  }, [language, isClient, allPokemon.length]);
 
   const handlePokemonClick = (id: number) => {
     router.push(`/pokemon/${id}`);
@@ -170,8 +232,27 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
             >
               {isClient && ready ? t('hero.section_title') : 'Discover Pokémon'}
             </Typography>
-            
-{loading ? (
+
+            {/* Search Bar */}
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                placeholder={isClient && ready ? t('search.placeholder') : 'Search Pokémon...'}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                sx={{ maxWidth: 600 }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+
+            {loading ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
                 <CircularProgress size={60} />
               </Box>
@@ -185,7 +266,7 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
                     px: { xs: 2, sm: 3 },
                   }}
                 >
-                  {pokemon.map((pokemonItem) => (
+                  {filteredPokemon.map((pokemonItem) => (
                     <Grid component="div" key={pokemonItem.id}>
                       <Card
                         onClick={() => handlePokemonClick(pokemonItem.id)}
@@ -245,12 +326,26 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
                   ))}
                 </Grid>
 
+                {/* No results message */}
+                {filteredPokemon.length === 0 && searchQuery && (
+                  <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
+                    <Typography variant="h6" color="text.secondary">
+                      {ready ? t('search.no_results') : 'No Pokémon found matching'} "{searchQuery}"
+                    </Typography>
+                  </Box>
+                )}
+
                 {/* Observer target for infinite scroll */}
                 <Box
                   ref={observerTarget}
                   sx={{ display: 'flex', justifyContent: 'center', py: 4 }}
                 >
-                  {loadingMore && <CircularProgress size={40} />}
+                  {!searchQuery && loadingMore && <CircularProgress size={40} />}
+                  {searchQuery && hasMoreSearchResults && (
+                    <Typography variant="body2" color="text.secondary">
+                      {ready ? t('search.load_more_hint') : 'Scroll down to load more Pokémon'}
+                    </Typography>
+                  )}
                 </Box>
               </>
             )}

@@ -8,6 +8,11 @@
       "placeholder": "Search Pokémon..."
     }
   },
+  "search": {
+    "placeholder": "Search Pokémon by name or number...",
+    "no_results": "No Pokémon found matching",
+    "load_more_hint": "Scroll down to load more Pokémon"
+  },
   "footer": {
     "powered_by": "Powered by",
     "copyright": "© 2025 Pokédex App. Made with ❤️ for Pokémon trainers everywhere."
@@ -15,6 +20,22 @@
   "hero": {
     "button": "Start Exploring",
     "section_title": "Discover Pokémon"
+  },
+  "pokemon": {
+    "not_found": "Pokémon not found",
+    "shiny": "Shiny",
+    "details": "Details",
+    "height": "Height",
+    "weight": "Weight",
+    "abilities": "Abilities",
+    "play_cry": "Play Cry",
+    "stop_cry": "Stop Cry",
+    "view_moves": "View Moves",
+    "moves_title": "Moves",
+    "type": "Type",
+    "power": "Power",
+    "pp": "PP",
+    "loading": "Loading..."
   },
   "professor": {
     "oak": "Professor Oak",

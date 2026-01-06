@@ -174,7 +174,7 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
       <>
         <Header darkMode={darkMode} onThemeToggle={onThemeToggle} language={language} onLanguageChange={onLanguageChange} />
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-          <Typography variant="h6">Pokémon not found</Typography>
+          <Typography variant="h6">{ready ? t('pokemon.not_found') : 'Pokémon not found'}</Typography>
         </Box>
         <Footer language={language} />
       </>
@@ -240,7 +240,7 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
                     color="warning"
                   />
                 }
-                label="Shiny"
+                label={ready ? t('pokemon.shiny') : 'Shiny'}
                 sx={{ fontSize: '1.1rem', fontWeight: 500 }}
               />
             </Box>
@@ -317,23 +317,23 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
                   {/* Stats and abilities */}
                   <Card sx={{ p: 3 }}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
-                      Details
+                      {ready ? t('pokemon.details') : 'Details'}
                     </Typography>
-                    
+
                     <Grid container spacing={2} sx={{ mb: 3 }}>
                       <Grid size={{ xs: 6 }}>
-                        <Typography variant="body2" color="text.secondary">Height</Typography>
+                        <Typography variant="body2" color="text.secondary">{ready ? t('pokemon.height') : 'Height'}</Typography>
                         <Typography variant="h6">{(pokemon.height / 10).toFixed(1)} m</Typography>
                       </Grid>
                       <Grid size={{ xs: 6 }}>
-                        <Typography variant="body2" color="text.secondary">Weight</Typography>
+                        <Typography variant="body2" color="text.secondary">{ready ? t('pokemon.weight') : 'Weight'}</Typography>
                         <Typography variant="h6">{(pokemon.weight / 10).toFixed(1)} kg</Typography>
                       </Grid>
                     </Grid>
 
                     {/* Abilities */}
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                      Abilities
+                      {ready ? t('pokemon.abilities') : 'Abilities'}
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 3 }}>
                       {pokemon.abilities.map((ability) => (
@@ -355,7 +355,7 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
                       sx={{ mb: 2, mr: 2 }}
                       disabled={!pokemon.cries?.latest}
                     >
-                      {isPlaying ? 'Stop Cry' : 'Play Cry'}
+                      {isPlaying ? (ready ? t('pokemon.stop_cry') : 'Stop Cry') : (ready ? t('pokemon.play_cry') : 'Play Cry')}
                     </Button>
 
                     {/* Moves button */}
@@ -364,7 +364,7 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
                       variant="outlined"
                       sx={{ mb: 2 }}
                     >
-                      View Moves
+                      {ready ? t('pokemon.view_moves') : 'View Moves'}
                     </Button>
                   </Card>
                 </Box>
@@ -392,14 +392,14 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
         }}>
           <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-              {pokemon.name}'s Moves
+              {localizedName || pokemon.name} - {ready ? t('pokemon.moves_title') : 'Moves'}
             </Typography>
             <IconButton onClick={() => setMovesModalOpen(false)}>
               <Close />
             </IconButton>
           </Box>
           <Divider />
-          
+
           {loadingMoves ? (
             <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
               <CircularProgress />
@@ -417,7 +417,7 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
                     secondary={
                       <Box>
                         <Typography variant="body2" color="text.secondary">
-                          Type: {move.type.name} | Power: {move.power || 'N/A'} | PP: {move.pp}
+                          {ready ? t('pokemon.type') : 'Type'}: {move.type.name} | {ready ? t('pokemon.power') : 'Power'}: {move.power || 'N/A'} | {ready ? t('pokemon.pp') : 'PP'}: {move.pp}
                         </Typography>
                       </Box>
                     }

@@ -8,6 +8,11 @@
       "placeholder": "Pokémon suchen..."
     }
   },
+  "search": {
+    "placeholder": "Pokémon nach Name oder Nummer suchen...",
+    "no_results": "Kein Pokémon gefunden, das übereinstimmt mit",
+    "load_more_hint": "Scrollen Sie nach unten, um weitere Pokémon zu laden"
+  },
   "footer": {
     "powered_by": "Unterstützt von",
     "copyright": "© 2025 Pokédex App. Mit ❤️ für Pokémon-Trainer weltweit gemacht."
@@ -15,6 +20,22 @@
   "hero": {
     "button": "Entdeckung beginnen",
     "section_title": "Pokémon entdecken"
+  },
+  "pokemon": {
+    "not_found": "Pokémon nicht gefunden",
+    "shiny": "Schillernd",
+    "details": "Details",
+    "height": "Größe",
+    "weight": "Gewicht",
+    "abilities": "Fähigkeiten",
+    "play_cry": "Ruf abspielen",
+    "stop_cry": "Ruf stoppen",
+    "view_moves": "Attacken anzeigen",
+    "moves_title": "Attacken",
+    "type": "Typ",
+    "power": "Stärke",
+    "pp": "AP",
+    "loading": "Lädt..."
   },
   "professor": {
     "oak": "Professor Eich",
