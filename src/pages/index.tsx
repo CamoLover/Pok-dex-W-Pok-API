@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Head from 'next/head';
 import { Box, Grid, Card, Typography, Container, CircularProgress } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import PokemonImage from '../components/PokemonImage';
-import { fetchAllPokemon, fetchPokemonSpecies, PokemonListItem, getPokemonImageUrl, getLocalizedName } from '../lib/pokeapi';
+import { fetchPokemonPaginated, fetchPokemonSpecies, PokemonListItem, getPokemonImageUrl, getLocalizedName } from '../lib/pokeapi';
 
 interface HomeProps {
   darkMode: boolean;
@@ -23,31 +23,69 @@ interface PokemonWithTranslation extends PokemonListItem {
 const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLanguageChange }) => {
   const [pokemon, setPokemon] = useState<PokemonWithTranslation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [offset, setOffset] = useState(0);
   const { t, ready } = useTranslation();
   const router = useRouter();
+  const observerTarget = useRef<HTMLDivElement>(null);
+
+  const ITEMS_PER_PAGE = 60;
+  const TOTAL_POKEMON = 1302;
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  useEffect(() => {
-    const loadPokemon = async () => {
-      try {
-        setLoading(true);
-        const allPokemon = await fetchAllPokemon();
-        setPokemon(allPokemon.map(p => ({ ...p, translatedName: undefined })));
-      } catch (error) {
-        console.error('Error loading Pokemon:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadMorePokemon = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
 
+    try {
+      setLoadingMore(true);
+      const newPokemon = await fetchPokemonPaginated(offset, ITEMS_PER_PAGE);
+
+      setPokemon(prev => [...prev, ...newPokemon.map(p => ({ ...p, translatedName: undefined }))]);
+      setOffset(prev => prev + ITEMS_PER_PAGE);
+
+      if (offset + ITEMS_PER_PAGE >= TOTAL_POKEMON) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Error loading Pokemon:', error);
+    } finally {
+      setLoadingMore(false);
+      setLoading(false);
+    }
+  }, [offset, loadingMore, hasMore]);
+
+  useEffect(() => {
     if (isClient) {
-      loadPokemon();
+      loadMorePokemon();
     }
   }, [isClient]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && hasMore && !loadingMore) {
+          loadMorePokemon();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasMore, loadingMore, loadMorePokemon]);
 
   useEffect(() => {
     if (!isClient || pokemon.length === 0 || language === 'en') {
@@ -133,78 +171,88 @@ const Home: React.FC<HomeProps> = ({ darkMode, onThemeToggle, language, onLangua
               {isClient && ready ? t('hero.section_title') : 'Discover Pokémon'}
             </Typography>
             
-            {loading ? (
+{loading ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
                 <CircularProgress size={60} />
               </Box>
             ) : (
-              <Grid
-                container
-                spacing={3}
-                sx={{
-                  justifyContent: 'center',
-                  px: { xs: 2, sm: 3 },
-                }}
-              >
-                {pokemon.map((pokemonItem) => (
-                  <Grid component="div" key={pokemonItem.id}>
-                    <Card
-                      onClick={() => handlePokemonClick(pokemonItem.id)}
-                      sx={{
-                        height: 250,
-                        width: 200,
-                        cursor: 'pointer',
-                        transition: 'transform 0.2s, box-shadow 0.2s',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        '&:hover': {
-                          transform: 'scale(1.05)',
-                          boxShadow: (theme) => theme.shadows[8],
-                        },
-                      }}
-                    >
-                      <PokemonImage
-                        src={getPokemonImageUrl(pokemonItem.id)}
-                        alt={pokemonItem.name}
-                        height="200"
+              <>
+                <Grid
+                  container
+                  spacing={3}
+                  sx={{
+                    justifyContent: 'center',
+                    px: { xs: 2, sm: 3 },
+                  }}
+                >
+                  {pokemon.map((pokemonItem) => (
+                    <Grid component="div" key={pokemonItem.id}>
+                      <Card
+                        onClick={() => handlePokemonClick(pokemonItem.id)}
                         sx={{
-                          objectFit: 'contain',
-                          backgroundColor: 'rgba(0,0,0,0.02)',
-                        }}
-                      />
-                      {/* Mini Footer */}
-                      <Box
-                        sx={{
+                          height: 250,
+                          width: 200,
+                          cursor: 'pointer',
+                          transition: 'transform 0.2s, box-shadow 0.2s',
                           display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          px: 2,
-                          py: 1,
-                          backgroundColor: 'background.paper',
+                          flexDirection: 'column',
+                          '&:hover': {
+                            transform: 'scale(1.05)',
+                            boxShadow: (theme) => theme.shadows[8],
+                          },
                         }}
                       >
-                        <Typography
-                          variant="body2"
-                          color="text.primary"
+                        <PokemonImage
+                          src={getPokemonImageUrl(pokemonItem.id)}
+                          alt={pokemonItem.name}
+                          height="200"
                           sx={{
-                            fontWeight: 500,
-                            textTransform: 'capitalize',
-                            fontSize: '0.9rem',
+                            objectFit: 'contain',
+                            backgroundColor: 'rgba(0,0,0,0.02)',
+                          }}
+                        />
+                        {/* Mini Footer */}
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            px: 2,
+                            py: 1,
+                            backgroundColor: 'background.paper',
                           }}
                         >
-                          {pokemonItem.translatedName || pokemonItem.name}
-                        </Typography>
-                        <Typography
-                          variant="h6"
-                          color="text.secondary"
-                        >
-                          N°{String(pokemonItem.id).padStart(3, '0')}
-                        </Typography>
-                      </Box>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
+                          <Typography
+                            variant="body2"
+                            color="text.primary"
+                            sx={{
+                              fontWeight: 500,
+                              textTransform: 'capitalize',
+                              fontSize: '0.9rem',
+                            }}
+                          >
+                            {pokemonItem.translatedName || pokemonItem.name}
+                          </Typography>
+                          <Typography
+                            variant="h6"
+                            color="text.secondary"
+                          >
+                            N°{String(pokemonItem.id).padStart(3, '0')}
+                          </Typography>
+                        </Box>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+
+                {/* Observer target for infinite scroll */}
+                <Box
+                  ref={observerTarget}
+                  sx={{ display: 'flex', justifyContent: 'center', py: 4 }}
+                >
+                  {loadingMore && <CircularProgress size={40} />}
+                </Box>
+              </>
             )}
           </Container>
         </Box>

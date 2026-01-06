@@ -161,7 +161,7 @@ async function fetchWithCache(url: string): Promise<any> {
 export async function fetchAllPokemon(): Promise<PokemonListItem[]> {
   try {
     const response: PokemonListResponse = await fetchWithCache(`${BASE_URL}/pokemon?limit=1302`);
-    
+
     return response.results.map((pokemon, index) => ({
       name: pokemon.name,
       url: pokemon.url,
@@ -169,6 +169,21 @@ export async function fetchAllPokemon(): Promise<PokemonListItem[]> {
     }));
   } catch (error) {
     console.error('Error fetching all Pokemon:', error);
+    return [];
+  }
+}
+
+export async function fetchPokemonPaginated(offset: number = 0, limit: number = 60): Promise<PokemonListItem[]> {
+  try {
+    const response: PokemonListResponse = await fetchWithCache(`${BASE_URL}/pokemon?offset=${offset}&limit=${limit}`);
+
+    return response.results.map((pokemon) => ({
+      name: pokemon.name,
+      url: pokemon.url,
+      id: extractIdFromUrl(pokemon.url)
+    }));
+  } catch (error) {
+    console.error('Error fetching Pokemon:', error);
     return [];
   }
 }
