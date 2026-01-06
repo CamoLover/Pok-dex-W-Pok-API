@@ -35,7 +35,11 @@
     "type": "Typ",
     "power": "Stärke",
     "pp": "AP",
-    "loading": "Lädt..."
+    "loading": "Lädt...",
+    "evolution": "Entwicklungskette",
+    "previous": "Vorherige",
+    "current": "Aktuell",
+    "next": "Nächste"
   },
   "professor": {
     "oak": "Professor Eich",

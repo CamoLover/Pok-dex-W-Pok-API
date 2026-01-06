@@ -35,7 +35,11 @@
     "type": "Type",
     "power": "Power",
     "pp": "PP",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "evolution": "Evolution Chain",
+    "previous": "Previous",
+    "current": "Current",
+    "next": "Next"
   },
   "professor": {
     "oak": "Professor Oak",

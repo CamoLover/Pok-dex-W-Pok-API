@@ -36,6 +36,8 @@ import {
   fetchPokemon,
   fetchPokemonSpecies,
   fetchMove,
+  fetchEvolutionChain,
+  flattenEvolutionChain,
   Pokemon,
   PokemonSpecies,
   Move,
@@ -71,6 +73,7 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
   const [movesModalOpen, setMovesModalOpen] = useState(false);
   const [moves, setMoves] = useState<Move[]>([]);
   const [loadingMoves, setLoadingMoves] = useState(false);
+  const [evolutionChain, setEvolutionChain] = useState<Array<{ name: string; id: number; localizedName: string }>>([]);
 
   useEffect(() => {
     if (id) {
@@ -94,9 +97,35 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
         fetchPokemon(id as string),
         fetchPokemonSpecies(id as string),
       ]);
-      
+
       setPokemon(pokemonData);
       setPokemonSpecies(speciesData);
+
+      // Fetch evolution chain
+      if (speciesData.evolution_chain?.url) {
+        try {
+          const evolutionData = await fetchEvolutionChain(speciesData.evolution_chain.url);
+          const flattenedChain = flattenEvolutionChain(evolutionData.chain);
+
+          // Fetch localized names for each Pokemon in the evolution chain
+          const chainWithNames = await Promise.all(
+            flattenedChain.map(async (evo) => {
+              try {
+                const evoSpecies = await fetchPokemonSpecies(evo.id);
+                const localizedName = getLocalizedName(evoSpecies.names, language);
+                return { ...evo, localizedName };
+              } catch (error) {
+                console.error(`Error loading species for ${evo.name}:`, error);
+                return { ...evo, localizedName: evo.name };
+              }
+            })
+          );
+
+          setEvolutionChain(chainWithNames);
+        } catch (error) {
+          console.error('Error loading evolution chain:', error);
+        }
+      }
     } catch (error) {
       console.error('Error loading Pokemon:', error);
     } finally {
@@ -370,6 +399,150 @@ const PokemonDetail: React.FC<PokemonDetailProps> = ({
                 </Box>
               </Grid>
             </Grid>
+
+            {/* Evolution Chain */}
+            {evolutionChain.length > 1 && (
+              <Box sx={{ mt: 4 }}>
+                <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, textAlign: 'center' }}>
+                  {ready ? t('pokemon.evolution') : 'Evolution Chain'}
+                </Typography>
+                <Card sx={{ p: 3 }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: 2,
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    {evolutionChain.map((evo) => (
+                      <Box
+                        key={evo.id}
+                        onClick={() => router.push(`/pokemon/${evo.id}`)}
+                        sx={{
+                          opacity: evo.id === pokemon?.id ? 1 : 0.75,
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          '&:hover': {
+                            opacity: 1,
+                            transform: 'scale(1.05)',
+                          },
+                        }}
+                      >
+                        <Box sx={{ textAlign: 'center' }}>
+                          <PokemonImage
+                            src={getPokemonImageUrl(evo.id, isShiny)}
+                            alt={evo.name}
+                            width={120}
+                            maxWidth={120}
+                            sx={{
+                              height: 'auto',
+                              display: 'block',
+                              objectFit: 'contain',
+                            }}
+                          />
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              textTransform: 'capitalize',
+                              fontWeight: evo.id === pokemon?.id ? 'bold' : 'normal',
+                              mt: 1,
+                            }}
+                          >
+                            {evo.localizedName || evo.name}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            N°{String(evo.id).padStart(3, '0')}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    ))}
+                  </Box>
+                </Card>
+              </Box>
+            )}
+
+            {/* Navigation Footer */}
+            <Box sx={{ mt: 4 }}>
+              <Card sx={{ p: 2 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: 2,
+                  }}
+                >
+                  {/* Previous Pokemon */}
+                  <Box
+                    onClick={() => pokemon && pokemon.id > 1 && router.push(`/pokemon/${pokemon.id - 1}`)}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      cursor: pokemon && pokemon.id > 1 ? 'pointer' : 'not-allowed',
+                      opacity: pokemon && pokemon.id > 1 ? 1 : 0.3,
+                      transition: 'opacity 0.3s ease',
+                      '&:hover': {
+                        opacity: pokemon && pokemon.id > 1 ? 0.8 : 0.3,
+                      },
+                    }}
+                  >
+                    <ArrowBack />
+                    <Box>
+                      <Typography variant="caption" color="text.secondary">
+                        {ready ? t('pokemon.previous') : 'Previous'}
+                      </Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                        N°{pokemon && pokemon.id > 1 ? String(pokemon.id - 1).padStart(3, '0') : '---'}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  {/* Current Pokemon */}
+                  <Box sx={{ textAlign: 'center', flexGrow: 1 }}>
+                    <Typography variant="caption" color="text.secondary">
+                      {ready ? t('pokemon.current') : 'Current'}
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', textTransform: 'capitalize' }}>
+                      {localizedName || pokemon?.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      N°{pokemon && String(pokemon.id).padStart(3, '0')}
+                    </Typography>
+                  </Box>
+
+                  {/* Next Pokemon */}
+                  <Box
+                    onClick={() => pokemon && pokemon.id < 1302 && router.push(`/pokemon/${pokemon.id + 1}`)}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      cursor: pokemon && pokemon.id < 1302 ? 'pointer' : 'not-allowed',
+                      opacity: pokemon && pokemon.id < 1302 ? 1 : 0.3,
+                      transition: 'opacity 0.3s ease',
+                      '&:hover': {
+                        opacity: pokemon && pokemon.id < 1302 ? 0.8 : 0.3,
+                      },
+                    }}
+                  >
+                    <Box sx={{ textAlign: 'right' }}>
+                      <Typography variant="caption" color="text.secondary">
+                        {ready ? t('pokemon.next') : 'Next'}
+                      </Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                        N°{pokemon && pokemon.id < 1302 ? String(pokemon.id + 1).padStart(3, '0') : '---'}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ transform: 'rotate(180deg)' }}>
+                      <ArrowBack />
+                    </Box>
+                  </Box>
+                </Box>
+              </Card>
+            </Box>
           </Container>
         </Box>
 

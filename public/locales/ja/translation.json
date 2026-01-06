@@ -35,7 +35,11 @@
     "type": "タイプ",
     "power": "威力",
     "pp": "PP",
-    "loading": "読み込み中..."
+    "loading": "読み込み中...",
+    "evolution": "進化の系統",
+    "previous": "前へ",
+    "current": "現在",
+    "next": "次へ"
   },
   "professor": {
     "oak": "オーキド博士",

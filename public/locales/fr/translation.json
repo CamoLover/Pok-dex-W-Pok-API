@@ -35,7 +35,11 @@
     "type": "Type",
     "power": "Puissance",
     "pp": "PP",
-    "loading": "Chargement..."
+    "loading": "Chargement...",
+    "evolution": "Chaîne d'évolution",
+    "previous": "Précédent",
+    "current": "Actuel",
+    "next": "Suivant"
   },
   "professor": {
     "oak": "Professeur Chen",

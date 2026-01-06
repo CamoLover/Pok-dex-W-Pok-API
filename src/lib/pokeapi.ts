@@ -80,6 +80,22 @@ export interface PokemonSpecies {
       url: string;
     };
   }>;
+  evolution_chain: {
+    url: string;
+  };
+}
+
+export interface EvolutionChain {
+  id: number;
+  chain: ChainLink;
+}
+
+export interface ChainLink {
+  species: {
+    name: string;
+    url: string;
+  };
+  evolves_to: ChainLink[];
 }
 
 export interface Move {
@@ -201,6 +217,24 @@ export async function fetchPokemonSpecies(idOrName: string | number): Promise<Po
 export async function fetchMove(idOrName: string | number): Promise<Move> {
   const url = `${BASE_URL}/move/${idOrName}`;
   return await fetchWithCache(url);
+}
+
+export async function fetchEvolutionChain(url: string): Promise<EvolutionChain> {
+  return await fetchWithCache(url);
+}
+
+export function flattenEvolutionChain(chain: ChainLink): Array<{ name: string; id: number }> {
+  const result: Array<{ name: string; id: number }> = [];
+
+  function traverse(link: ChainLink) {
+    const id = extractIdFromUrl(link.species.url);
+    result.push({ name: link.species.name, id });
+
+    link.evolves_to.forEach(evolution => traverse(evolution));
+  }
+
+  traverse(chain);
+  return result;
 }
 
 export function getPokemonImageUrl(id: number, isShiny: boolean = false, isBack: boolean = false): string {
